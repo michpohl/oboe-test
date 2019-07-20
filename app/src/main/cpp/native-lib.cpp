@@ -6,8 +6,6 @@
 #include <oboe/Oboe.h>
 #include "AudioEngine.h"
 
-AudioEngine engine;
-
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_michaelpohl_oboetest_CppAdapter_stringFromJNI(JNIEnv *env,
