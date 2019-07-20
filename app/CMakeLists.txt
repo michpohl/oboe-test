@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-add_library(oboePlayer
+add_library(native_lib
         SHARED
 
-        src/main/cpp/oboePlayer.cpp)
+        src/main/cpp/native_lib.cpp
+
+        src/main/cpp/AudioEngine.cpp
+
+        )
 
 # Set the path to the Oboe directory.
 set (OBOE_DIR /Volumes/Work/Repos/Android/oboe-test/oboe)

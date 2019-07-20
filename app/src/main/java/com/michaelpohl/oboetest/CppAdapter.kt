@@ -9,6 +9,6 @@ class CppAdapter {
         return stringFromJNI()
     }
 
-    external fun stringFromJNI(): String
+    private external fun stringFromJNI(): String
 
 }
