@@ -18,6 +18,7 @@
 #define OBOE_TEST_AASSETDATASOURCE_H
 
 #include <android/asset_manager.h>
+#include <memory>
 #include "Constants.h"
 #include "DataSource.h"
 

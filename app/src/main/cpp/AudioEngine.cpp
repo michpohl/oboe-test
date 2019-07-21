@@ -50,7 +50,7 @@ bool AudioEngine::setupSource() {
     };
 
 
-    // Create a data source and player for our backing track
+    // Create a data source and player
     std::shared_ptr<AAssetDataSource> loopSource{
             AAssetDataSource::newFromCompressedAsset(mAssetManager, loopFileName, targetProperties)
     };
@@ -61,8 +61,6 @@ bool AudioEngine::setupSource() {
     loop = std::make_unique<Player>(loopSource);
     loop->setPlaying(true);
     loop->setLooping(true);
-
-    // Add both players to a mixer
 
     mMixer.addTrack(loop.get());
 

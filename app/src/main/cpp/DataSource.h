@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef OBOE_TEST_AUDIOSOURCE_H
-#define OBOE_TEST_AUDIOSOURCE_H
+#ifndef OBOE_TEST_DATASOURCE_H
+#define OBOE_TEST_DATASOURCE_H
 
 #include <cstdint>
 #include "Constants.h"
@@ -28,5 +28,4 @@ public:
     virtual const float* getData() const = 0;
 };
 
-
-#endif //OBOE_TEST_AUDIOSOURCE_H
+#endif //OBOE_TEST_DATASOURCE_H
