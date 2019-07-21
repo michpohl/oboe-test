@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef RHYTHMGAME_SOUNDRECORDING_H
-#define RHYTHMGAME_SOUNDRECORDING_H
+#ifndef OBOE_TEST_SOUNDRECORDING_H
+#define OBOE_TEST_SOUNDRECORDING_H
 
 #include <cstdint>
 #include <array>
@@ -57,4 +57,4 @@ private:
     void renderSilence(float*, int32_t);
 };
 
-#endif //RHYTHMGAME_SOUNDRECORDING_H
+#endif //OBOE_TEST_SOUNDRECORDING_H

@@ -18,6 +18,7 @@
 #define OBOE_TEST_AASSETDATASOURCE_H
 
 #include <android/asset_manager.h>
+#include "Constants.h"
 #include "DataSource.h"
 
 class AAssetDataSource : public DataSource {
@@ -46,4 +47,4 @@ private:
     const AudioProperties mProperties;
 
 };
-#endif //RHYTHMGAME_AASSETDATASOURCE_H
+#endif //OBOE_TEST_AASSETDATASOURCE_H

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
+include_directories(src/main/cpp/)
+
 add_library(native-lib
         SHARED
 
@@ -29,18 +31,9 @@ add_library(native-lib
 
         src/main/cpp/UtilityFunctions.cpp
 
+        src/main/cpp/LockFreeQueue.h
+
         )
-
-# Set the path to the Oboe directory.
-set (OBOE_DIR /Volumes/Work/Repos/Android/oboe-test/oboe)
-
-# Add the Oboe library as a subdirectory.
-add_subdirectory (${OBOE_DIR} ./oboe)
-
-# Specify the path to the Oboe header files.
-include_directories (${OBOE_DIR}/include)
-
-
 
 target_link_libraries(
         native-lib
@@ -49,3 +42,18 @@ target_link_libraries(
         oboe
         GLESv2
 )
+
+set(CMAKE_CXX_STANDARD 17)
+
+# Set the path to the Oboe directory.
+set(OBOE_DIR /Volumes/Work/Repos/Android/oboe-test/oboe)
+
+# Add the Oboe library as a subdirectory.
+add_subdirectory(${OBOE_DIR} ./oboe)
+
+# Specify the path to the Oboe header files.
+include_directories(${OBOE_DIR}/include)
+
+target_compile_options(native-lib
+        PRIVATE -std=c++17 -Wall -Werror "$<$<CONFIG:RELEASE>:-Ofast>")
+

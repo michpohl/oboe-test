@@ -2,22 +2,48 @@
 // Created by Michael on 2019-07-19.
 //
 
-#include "AudioEngine.h"
-#include "../../../../../oboe/src/common/OboeDebug.h"
 #include "Constants.h"
 #include "AAssetDataSource.h"
+#include <thread>
+#include <cinttypes>
+#include "AudioEngine.h"
+#include "logging.h"
 
 AudioEngine::AudioEngine(AAssetManager &assetManager): mAssetManager(assetManager) {
 }
 
+void AudioEngine::start() {
+    // async returns a future, we must store this future to avoid blocking. It's not sufficient
+    // to store this in a local variable as its destructor will block until Game::load completes.
+    mLoadingResult = std::async(&AudioEngine::load, this);
 
-void AudioEngine::play() {
+}
 
+void AudioEngine::load() {
+
+    if (!openStream()) {
+        mGameState = GameState::FailedToLoad;
+        return;
+    }
+
+    if (!setupSource()) {
+        mGameState = GameState::FailedToLoad;
+        return;
+    }
+
+    Result result = mAudioStream->requestStart();
+    if (result != Result::OK){
+        LOGE("Failed to start stream. Error: %s", convertToText(result));
+        mGameState = GameState::FailedToLoad;
+        return;
+    }
+
+    mGameState = GameState::Playing;
 }
 
 bool AudioEngine::setupSource() {
 
-    // Set the properties of our audio source(s) to match that of our audio stream
+    //  Set the properties of our audio source(s) to match that of our audio stream
     AudioProperties targetProperties{
             .channelCount = mAudioStream->getChannelCount(),
             .sampleRate = mAudioStream->getSampleRate()
@@ -44,6 +70,37 @@ bool AudioEngine::setupSource() {
 }
 
 
+bool AudioEngine::openStream() {
+
+    // Create an audio stream
+    AudioStreamBuilder builder;
+    builder.setCallback(this);
+    builder.setPerformanceMode(PerformanceMode::LowLatency);
+    builder.setSharingMode(SharingMode::Exclusive);
+
+    Result result = builder.openStream(&mAudioStream);
+    if (result != Result::OK){
+        LOGE("Failed to open stream. Error: %s", convertToText(result));
+        return false;
+    }
+
+    if (mAudioStream->getFormat() == AudioFormat::I16){
+        mConversionBuffer = std::make_unique<float[]>(
+                (size_t)mAudioStream->getBufferCapacityInFrames() *
+                mAudioStream->getChannelCount());
+    }
+//
+//    // Reduce stream latency by setting the buffer size to a multiple of the burst size
+    auto setBufferSizeResult = mAudioStream->setBufferSizeInFrames(
+            mAudioStream->getFramesPerBurst() * 2); // Use 2 bursts as the buffer size (double buffer)
+    if (setBufferSizeResult != Result::OK){
+        LOGW("Failed to set buffer size. Error: %s", convertToText(setBufferSizeResult.error()));
+    }
+
+    mMixer.setChannelCount(mAudioStream->getChannelCount());
+
+    return true;
+}
 
 DataCallbackResult
 AudioEngine::onAudioReady(AudioStream *oboeStream, void *audioData, int32_t numFrames) {

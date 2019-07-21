@@ -19,12 +19,17 @@
 
 using namespace oboe;
 
+enum class GameState {
+    Loading,
+    Playing,
+    FailedToLoad
+};
+
 class AudioEngine : public AudioStreamCallback {
 
 public:
     explicit AudioEngine(AAssetManager&);
-    void play();
-    bool setupSource();
+    void start();
 
     // Inherited from oboe::AudioStreamCallback
     DataCallbackResult
@@ -40,6 +45,13 @@ private:
     std::atomic<int64_t> mCurrentFrame { 0 };
     std::atomic<int64_t> mSongPositionMs { 0 };
     std::atomic<int64_t> mLastUpdateTime { 0 };
+    std::atomic<GameState> mGameState { GameState::Loading };
+    std::future<void> mLoadingResult;
+
+
+    void load();
+    bool openStream();
+    bool setupSource();
 
 };
 

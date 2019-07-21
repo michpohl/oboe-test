@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef SHARED_MONOTOSTEREO_H
-#define SHARED_MONOTOSTEREO_H
+#ifndef OBOE_TEST_MONOTOSTEREO_H
+#define OBOE_TEST_MONOTOSTEREO_H
 
 #include "IRenderableAudio.h"
 

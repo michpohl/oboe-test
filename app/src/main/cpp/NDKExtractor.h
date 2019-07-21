@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef FFMPEG_NDKMEDIAEXTRACTOR_H
-#define FFMPEG_NDKMEDIAEXTRACTOR_H
+#ifndef OBOE_TEST_NDKMEDIAEXTRACTOR_H
+#define OBOE_TEST_NDKMEDIAEXTRACTOR_H
 
 
 #include <cstdint>
